@@ -33,9 +33,13 @@ env:
   sdk_key: rNHXebCtrUWyeDeAihKoDCmwM9sL2WfshXTVHs-7N0yUBE4D0KtcycoTQgE7Ha2a9CsCn9WI22ZwsJQ29h6LzI
   app_name: Unzip - zip file opener
 
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
-  bundler: true
   directories:
-    - Carthage
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache
 
 script: "sh automate.sh $bundle_id $app_name $callback_url $sdk_key"
