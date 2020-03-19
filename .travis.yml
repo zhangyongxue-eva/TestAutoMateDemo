@@ -3,8 +3,8 @@ jdk: oraclejdk8          #jdk版本
 sudo: required           #权限要求
 android:             #Android 环境要求
 components:
-  - tools
-  - platform-tools
+#  - tools
+#  - platform-tools
   - build-tools-26.0.2
   - android-26
   - android-22
