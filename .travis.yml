@@ -1,39 +1,41 @@
-language: android
-dist: trusty
-android:
-  components:
-    # Uncomment the lines below if you want to
-    # use the latest revision of Android SDK Tools
-     - tools
-     - platform-tools
+language: android        #语言说明
+jdk: oraclejdk8          #jdk版本
+sudo: required           #权限要求
+android:             #Android 环境要求
+components:
+  - tools
+  - platform-tools
+  - build-tools-26.0.2
+  - android-26
+  - android-22
+  - extra-google-m2repository
+  - extra-android-m2repository        # 配置design 库
+  #  - addon-google_apis-google-19       # 配置google play services
+  #  - sys-img-armeabi-v7a-android-26
+  - sys-img-armeabi-v7a-android-22
+licenses:               #内容许可添加
+  - android-sdk-preview-license-.+
+  - android-sdk-license-.+
+  - google-gdk-license-.+
 
-    # The BuildTools version used by your project
-    - build-tools-26.0.2
+#####
+before_script:
+  - chmod +x gradlew
+  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
+  - emulator -avd test -no-skin -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
 
-    # The SDK version used to compile your project
-    - android-26
-    - android-22
+#########
+env:
+  bundle_id: com.cuilingshi.fileextract
+  callback_url: http://api-mas-admin-test.yodo1.com/api/mas/task/async/3258d827-e7bc-4cf4-98f2-f84e4b3f0ffe
+  sdk_key: rNHXebCtrUWyeDeAihKoDCmwM9sL2WfshXTVHs-7N0yUBE4D0KtcycoTQgE7Ha2a9CsCn9WI22ZwsJQ29h6LzI
+  app_name: Unzip - zip file opener
 
-    # Additional components
-    - extra-google-google_play_services
-    - extra-google-m2repository
-    - extra-android-m2repository
+cache:
+  bundler: true
+  directories:
+    - Carthage
 
-    licenses:
-      - 'android-sdk-preview-license-52d11cd2'
-      - 'android-sdk-license-.+'
-      - 'google-gdk-license-.+'
-
-    # Specify at least one system image,
-    # if you need to run emulator(s) during your tests
-#    - sys-img-x86-android-26
-    - sys-img-armeabi-v7a-android-22
-
-  before_script:
-    - chmod +x gradlew
-    # Create and start emulator
-    - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
-    - emulator -avd test -no-skin -no-audio -no-window &
-    - android-wait-for-emulator
-    - adb shell input keyevent 82 &
-    
+script: "sh automate.sh $bundle_id $app_name $callback_url $sdk_key"
