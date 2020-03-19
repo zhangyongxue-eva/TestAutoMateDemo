@@ -1,34 +1,33 @@
-language: android        #语言说明
-jdk: oraclejdk8          #jdk版本
-sudo: required           #权限要求
-android:             #Android 环境要求
-components:
-#  - tools
-#  - platform-tools
-  - build-tools-23.0.2
-  - android-23
-  - android-22
-  - extra-google-m2repository
-  - extra-android-m2repository        # 配置design 库
-  #  - addon-google_apis-google-19       # 配置google play services
-  #  - sys-img-armeabi-v7a-android-26
-  - sys-img-armeabi-v7a-android-22
-licenses:               #内容许可添加
-  - android-sdk-preview-license-.+
-  - android-sdk-license-.+
-  - google-gdk-license-.+
-
-before_install:
-  - sudo chmod +x gradlew
-#####
+jdk: oraclejdk8
+language: android
+android:
+  components:
+    - tools
+    - platform-tools
+    - build-tools-23.0.3
+    - android-23
+    - extra-android-m2repository
+    - extra-android-support
+    - sys-img-armeabi-v7a-android-23
+    - extra-google-google_play_services
+  licenses:
+    - android-sdk-preview-license-52d11cd2
+    - android-sdk-license-c81a61d9
+    - android-sdk-license-.+
+    - google-gdk-license-.+
 before_script:
-#  - chmod +x gradlew
-  - android list targets
-  - echo no | android create avd --force --name test --target android-22 --abi armeabi-v7a
-#  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
+  - echo no | android create avd --force -n test -t android-23 --abi armeabi-v7a
   - emulator -avd test -no-skin -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
+before_cache:
+  - "rm -f $HOME/.gradle/caches/modules-2/modules-2.lock"
+before_install:
+  - "chmod +x gradlew"
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
 
 #########
 env:
@@ -36,14 +35,5 @@ env:
   callback_url: http://api-mas-admin-test.yodo1.com/api/mas/task/async/3258d827-e7bc-4cf4-98f2-f84e4b3f0ffe
   sdk_key: rNHXebCtrUWyeDeAihKoDCmwM9sL2WfshXTVHs-7N0yUBE4D0KtcycoTQgE7Ha2a9CsCn9WI22ZwsJQ29h6LzI
   app_name: Unzip - zip file opener
-
-before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-cache:
-  directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
-    - $HOME/.android/build-cache
 
 script: "sh automate.sh $bundle_id $app_name $callback_url $sdk_key"
