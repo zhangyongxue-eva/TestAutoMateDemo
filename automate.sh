@@ -1,9 +1,6 @@
 
 #Define all paths, constants here
-#PROJECT_DIR='/Users/zhangyongxue/dev/android/otherProjects/Android-SDK-Demo-master/MyTestA/'
 PROJECT_DIR=$(cd "$(dirname "$0")"; pwd)
-#OUTPUT_DIR='/Users/zhangyongxue/dev/android/otherProjects/Android-SDK-Demo-master/MyTestA/OUTPUT_DIR/'
-#LOCAL_PATH='/Users/zhangyongxue/dev/android/otherProjects/Android-SDK-Demo-master/MyTestA/local.properties'
 LOCAL_PATH=${PROJECT_DIR}/local.properties
 
 #下面部分接收参数，并替换 local.properties 中对应的值
@@ -11,11 +8,41 @@ echo "第一个参数: $1"
 echo "第二个参数：$2"
 echo "第三个参数：$3"
 echo "第四个参数：$4"
+echo "LOCAL_PATH：$LOCAL_PATH"
 
-sed -i '' "s#^key_applicationid=.*#key_applicationid=${1}#g" $LOCAL_PATH
-sed -i '' "s#^key_oemappname=.*#key_oemappname=${2}#g" $LOCAL_PATH
-sed -i '' "s#^key_targeturl=.*#key_targeturl=${3}#g" $LOCAL_PATH
-sed -i '' "s#^key_applovin=.*#key_applovin=${4}#g" $LOCAL_PATH
+# test 打印工程根目录中的所有文件名
+echo "遍历根目录下的所有文件名"
+dir=`ls $PROJECT_DIR ` #定义遍历的目录
+for i in $dir
+do
+    echo $i
+done
+# test 写入参数之前 将 local.properties 文件中的内容读出并打印出来
+echo "local.properties 下的所有内容"
+filelist=`cat  $LOCAL_PATH`
+for list in  ${filelist}
+do
+    echo ${list}
+done
+
+#sed -i '' "s#^key_applicationid=.*#key_applicationid=${1}#g" $LOCAL_PATH
+#sed -i '' "s#^key_oemappname=.*#key_oemappname=${2}#g" $LOCAL_PATH
+#sed -i '' "s#^key_targeturl=.*#key_targeturl=${3}#g" $LOCAL_PATH
+#sed -i '' "s#^key_applovin=.*#key_applovin=${4}#g" $LOCAL_PATH
+
+#sed 's/book/books/' file  特殊字符需要转义且需要将转义后的字符串用双引号括起来
+sed -i '' "s/key_applicationid=.*/key_applicationid=${1}/g" $LOCAL_PATH
+sed -i '' "s/key_oemappname=.*/key_oemappname=${2}/g" $LOCAL_PATH
+sed -i '' "s/key_targeturl=.*/key_targeturl=${3}/g" $LOCAL_PATH
+sed -i '' "s/key_applovin=.*/key_applovin=${4}/g" $LOCAL_PATH
+
+# test 写入参数之后 将 local.properties 文件中的内容读出并打印出来
+echo "local.properties 下的所有内容"
+filelist=`cat  $LOCAL_PATH`
+for list in  ${filelist}
+do
+    echo ${list}
+done
 
 
 # Functions for customizing colors(Optional)
@@ -56,7 +83,7 @@ print_blue "installDebug...\n"
 print_blue "\n\n\n Done Installing\n"
 
 #Launch Main Activity
-adb shell am start -n "com.test.testtrvisdemo/com.test.testtrvisdemo.MainActivity" -a android.intent.action.MAIN -c android.intent.category.LAUNCHER
+adb shell am start -n "com.test.testautomatedemo/com.test.testautomatedemo.MainActivity" -a android.intent.action.MAIN -c android.intent.category.LAUNCHER
 
 print_blue "\n\n\n Launched main activity\n"
 
