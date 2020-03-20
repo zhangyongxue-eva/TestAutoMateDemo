@@ -30,11 +30,11 @@ done
 #sed -i '' "s#^key_targeturl=.*#key_targeturl=${3}#g" $LOCAL_PATH
 #sed -i '' "s#^key_applovin=.*#key_applovin=${4}#g" $LOCAL_PATH
 
-#sed 's/book/books/' file  特殊字符需要转义且需要将转义后的字符串用双引号括起来
-sed -i '' "s/key_applicationid=.*/key_applicationid=${1}/g" $LOCAL_PATH
-sed -i '' "s/key_oemappname=.*/key_oemappname=${2}/g" $LOCAL_PATH
-sed -i '' "s/key_targeturl=.*/key_targeturl=${3}/g" $LOCAL_PATH
-sed -i '' "s/key_applovin=.*/key_applovin=${4}/g" $LOCAL_PATH
+#sed -i 's/book/books/g' file  特殊字符需要转义且需要将转义后的字符串用双引号括起来
+sed -i "s/key_applicationid=.*/key_applicationid=${1}/g" $LOCAL_PATH
+sed -i "s/key_oemappname=.*/key_oemappname=${2}/g" $LOCAL_PATH
+sed -i "s/key_targeturl=.*/key_targeturl=${3}/g" $LOCAL_PATH
+sed -i "s/key_applovin=.*/key_applovin=${4}/g" $LOCAL_PATH
 
 # test 写入参数之后 将 local.properties 文件中的内容读出并打印出来
 echo "local.properties 下的所有内容"
